@@ -15,6 +15,9 @@ public class planeFlight : MonoBehaviour
 
     [Tooltip("Rotacion horizontal")]
     public float hRotation;
+    [Tooltip("GUI Seleccionada")]
+    public GameObject GUI;
+
 
     // Start is called before the first frame update
     void Start()
@@ -58,5 +61,11 @@ public class planeFlight : MonoBehaviour
         Vector3 a = new Vector3(rotation*5f,0,hRotation*5f);
 
         transform.Rotate(a, Space.Self);
+    }
+
+
+    
+    void OnCollisionEnter(Collision col) {
+        GUI.SetActive(true);
     }
 }
