@@ -1,9 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class planeFlight : MonoBehaviour
 {
+    //Cams
+    public GameObject cam1;
+    public GameObject cam2;
+    public GameObject cam3;
+    public GameObject cam4;
+    public GameObject cam5;
+    int camN;
     //forward speed
     [Tooltip("Velocidad de avance inicial")]
     public float speed;
@@ -11,12 +18,17 @@ public class planeFlight : MonoBehaviour
     [Tooltip("Velocidad de giro horizontal")]
     public float rSpeed;
     [Tooltip("Rotacion vertical")]
+    //Rotational movement
     public float rotation;
-
     [Tooltip("Rotacion horizontal")]
     public float hRotation;
+    //GUI para mostrar
     [Tooltip("GUI Seleccionada")]
     public GameObject GUI;
+    //Obeto de bomba
+    [Tooltip("Objeto que va a soltar como Bomba")]
+    public Rigidbody Bomb;
+    public Transform offSet;
 
 
     // Start is called before the first frame update
@@ -25,6 +37,11 @@ public class planeFlight : MonoBehaviour
         rSpeed=0;
         rotation=0;
         hRotation=0;
+        cam1.SetActive(true);
+        cam2.SetActive(false);
+        cam3.SetActive(false);
+        cam4.SetActive(false);
+        cam5.SetActive(false);
     }
 
     // Update is called once per frame
@@ -61,10 +78,57 @@ public class planeFlight : MonoBehaviour
         Vector3 a = new Vector3(rotation*5f,0,hRotation*5f);
 
         transform.Rotate(a, Space.Self);
+
+        //drop bomb
+        if (Input.GetKeyDown(KeyCode.Space)){
+            Rigidbody instance;
+            instance = Instantiate(Bomb, offSet.position, offSet.rotation) as Rigidbody;
+        }
+
+        //change camera
+        if (Input.GetKeyDown("c")){
+            camN++;
+            switch(camN){
+                case 1:
+                    cam1.SetActive(false);
+                    cam2.SetActive(true);
+                    cam3.SetActive(false);
+                    cam4.SetActive(false);
+                    cam5.SetActive(false);
+                    break;
+                case 2:
+                    cam1.SetActive(false);
+                    cam2.SetActive(false);
+                    cam3.SetActive(true);
+                    cam4.SetActive(false);
+                    cam5.SetActive(false);
+                    break;
+                case 3:
+                    cam1.SetActive(false);
+                    cam2.SetActive(false);
+                    cam3.SetActive(false);
+                    cam4.SetActive(true);
+                    cam5.SetActive(false);
+                    break;
+                case 4:
+                    cam1.SetActive(false);
+                    cam2.SetActive(false);
+                    cam3.SetActive(false);
+                    cam4.SetActive(false);
+                    cam5.SetActive(true);
+                    break;
+                case 5:
+                    cam1.SetActive(true);
+                    cam2.SetActive(false);
+                    cam3.SetActive(false);
+                    cam4.SetActive(false);
+                    cam5.SetActive(false);
+                    camN=0;
+                    break;
+            }
+        }
     }
 
-
-    
     void OnCollisionEnter(Collision col) {
         GUI.SetActive(true);
     }
